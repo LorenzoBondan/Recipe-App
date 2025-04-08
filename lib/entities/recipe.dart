@@ -19,7 +19,7 @@ class Recipe {
       'id': id,
       'name': name,
       'rate': rate,
-      'added_date': addedDate.millisecondsSinceEpoch,
+      'added_date': addedDate.toIso8601String(),
       'preparation_time_minutes': preparationTimeMinutes,
     };
   }
@@ -29,7 +29,7 @@ class Recipe {
       id: map['id'] as int,
       name: map['name'] as String,
       rate: map['rate'] as double,
-      addedDate: DateTime.fromMillisecondsSinceEpoch(map['added_date'] as int),
+      addedDate: DateTime.parse(map['added_date']),
       preparationTimeMinutes: map['preparation_time_minutes'] as int,
       ingredients: (map['recipe_ingredients'] as List<dynamic>?)
               ?.map((ingredient) => RecipeIngredient.fromMap(ingredient))
