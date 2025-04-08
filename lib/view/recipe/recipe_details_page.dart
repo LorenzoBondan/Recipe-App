@@ -1,30 +1,215 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:recipe_app/entities/recipe.dart';
+import 'package:recipe_app/services/recipe_service.dart';
+import 'package:recipe_app/view/recipe/recipe_form_page.dart';
+import 'package:recipe_app/view/recipe/recipe_list_page.dart';
 
-class RecipeDetailsPage extends StatelessWidget {
+class RecipeDetailsPage extends StatefulWidget {
   final Recipe recipe;
 
   const RecipeDetailsPage({super.key, required this.recipe});
 
   @override
+  RecipeDetailsPageState createState() => RecipeDetailsPageState();
+}
+
+class RecipeDetailsPageState extends State<RecipeDetailsPage> {
+  late RecipeService service;
+  /*
+  late RecipeIngredientService recipeIngredientService;
+  late List<RecipeIngredient> ingredients;
+  late PreparationStepService preparationStepService;
+  late List<PreparationStep> steps;
+  */
+
+  @override
+  void initState() {
+    super.initState();
+    service = Provider.of<RecipeService>(context, listen: false);
+    /*
+    recipeIngredientService = Provider.of<RecipeIngredientService>(context, listen: false);
+    _loadRecipeIngredients();
+    preparationStepService = Provider.of<PreparationStepService>(context, listen: false);
+    _loadPreparationSteps();
+    */
+  }
+
+  /*
+  void _loadRecipeIngredients() {
+    setState(() {
+      ingredients = recipeIngredientService.findByRecipeId(widget.task.id);
+    });
+  }
+
+  void _loadPreparationSteps() {
+    setState(() {
+      steps = preparationStepService.findByRecipeId(widget.task.id);
+    });
+  }
+
+  void _deleteRecipeIngredient(int recipeIngredientId) {
+    recipeIngredientService.delete(recipeIngredientId);
+    _loadRecipeIngredients();
+  }
+
+  void _deletePreparationStep(int preparationStepId) {
+    preparationStepService.delete(preparationStepId);
+    _loadPreparationSteps();
+  }
+  */
+
+  void _confirmDelete(BuildContext context, int RecipeId) {
+    showDialog(
+      context: context,
+      builder: (BuildContext dialogContext) {
+        return AlertDialog(
+          title: const Text("Confirm Deletion"),
+          content: const Text("Are you sure you want to delete this Recipe?"),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext),
+              child: const Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () {
+                Provider.of<RecipeService>(context, listen: false).delete(RecipeId);
+                Navigator.pop(dialogContext);
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(builder: (context) => RecipeListPage()),
+                );
+              },
+              child: const Text("Delete", style: TextStyle(color: Colors.red)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Details: ${recipe.name}')),
+      appBar: AppBar(
+        title: Text('Recipe Details', style: TextStyle(fontWeight: FontWeight.bold)),
+        backgroundColor: Colors.deepPurple,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text('Name: ${recipe.name}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+
+            Text(widget.recipe.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
             const SizedBox(height: 10),
-            Center(
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.pop(context);
+
+            Text('Rate: ${widget.recipe.rate}', style: const TextStyle(fontSize: 14, color: Colors.black87)),
+            const SizedBox(height: 10),
+
+            Text('Preparation time: ${widget.recipe.preparationTimeMinutes} minutes', style: const TextStyle(fontSize: 14, color: Colors.black87)),
+            const SizedBox(height: 10),
+
+            Text('Ingredients', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
+            //RecipeIngredientListPage(inredients: recipeIngredientService.findByRecipeId(widget.recipe.id), onDelete: _deleteRecipeIngredient, onEdit: _loadRecipeIngredients),
+            
+            /*
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: FloatingActionButton(
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
+                child: const Icon(Icons.add),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecipeIngredientFormPage(recipeId: widget.recipe.id)),
+                  );
+                  _loadIngredients();
                 },
-                child: const Text('Back'),
               ),
             ),
+            const SizedBox(height: 40),
+            */
+
+            Text('Steps', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
+            //PreparationStepListPage(steps: preparationStepService.findByRecipeId(widget.recipe.id), onDelete: _deletePreparationStep, onEdit: _loadPreparationSteps),
+            
+            /*
+            Align(
+              alignment: Alignment.bottomCenter,
+              child: FloatingActionButton(
+                backgroundColor: Colors.deepPurple,
+                foregroundColor: Colors.white,
+                child: const Icon(Icons.add),
+                onPressed: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => RecipeIngredientFormPage(recipeId: widget.recipe.id)),
+                  );
+                  _loadIngredients();
+                },
+              ),
+            ),
+            const SizedBox(height: 40),
+            */
+            
+            SizedBox(
+              width: double.infinity, 
+              child: 
+                Center(
+                  child: 
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                            
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.edit),
+                          label: const Text('Edit'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            iconColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(builder: (context) => RecipeFormPage(recipe: widget.recipe)),
+                            );
+                          },
+                        ),
+
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.delete),
+                          label: const Text('Delete'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            iconColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
+                          onPressed: () {
+                            _confirmDelete(context, widget.recipe.id);
+                          },
+                        ),
+                        ElevatedButton.icon(
+                          icon: const Icon(Icons.arrow_back),
+                          label: const Text('Back'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.deepPurple,
+                            foregroundColor: Colors.white,
+                            iconColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          ),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                    ],
+                  ),
+                )
+              ),
           ],
         ),
       ),
