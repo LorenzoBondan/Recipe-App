@@ -1,5 +1,5 @@
 import 'package:sqflite/sqflite.dart';
-import 'package:recipe_app/entities/Recipe.dart';
+import 'package:recipe_app/entities/recipe.dart';
 import 'package:recipe_app/repositories/database_helper.dart';
 
 class RecipeRepository {

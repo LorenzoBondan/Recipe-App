@@ -46,4 +46,3 @@ class Recipe {
 
   factory Recipe.fromJson(String source) => Recipe.fromMap(json.decode(source) as Map<String, dynamic>);
 }
-

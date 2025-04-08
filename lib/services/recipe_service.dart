@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:recipe_app/entities/Recipe.dart';
-import 'package:recipe_app/repositories/Recipe_repository.dart';
+import 'package:recipe_app/entities/recipe.dart';
+import 'package:recipe_app/repositories/recipe_repository.dart';
 
 class RecipeService extends ChangeNotifier {
   final RecipeRepository repository = RecipeRepository();

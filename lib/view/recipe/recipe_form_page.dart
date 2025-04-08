@@ -1,0 +1,94 @@
+import 'package:flutter/material.dart';
+import 'package:recipe_app/entities/recipe.dart';
+import 'package:recipe_app/services/recipe_service.dart';
+import 'package:provider/provider.dart';
+
+class RecipeFormPage extends StatefulWidget {
+  final Recipe? recipe;
+
+  const RecipeFormPage({super.key, this.recipe});
+
+  @override
+  State<RecipeFormPage> createState() => _RecipeFormPageState();
+}
+
+class _RecipeFormPageState extends State<RecipeFormPage> {
+  final _formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _rateController = TextEditingController();
+  final TextEditingController _preparationTimeMinutesController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.recipe != null) {
+      _nameController.text = widget.recipe!.name;
+      _rateController.text = widget.recipe!.rate.toString();
+      _preparationTimeMinutesController.text = widget.recipe!.preparationTimeMinutes.toString();
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final service = Provider.of<RecipeService>(context, listen: false);
+
+    return Scaffold(
+      appBar: AppBar(title: Text(widget.recipe == null ? 'Add Recipe' : 'Edit Recipe')),
+      
+      body: Padding(
+        padding: EdgeInsets.all(16),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+
+              TextFormField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Recipe Name'),
+                validator: (value) => value!.isEmpty ? 'Enter a Recipe name' : null,
+              ),
+              const SizedBox(height: 10),
+
+              TextFormField(
+                controller: _rateController,
+                decoration: const InputDecoration(labelText: 'Recipe Rate'),
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty ? 'Enter a Recipe rate' : null,
+              ),
+              const SizedBox(height: 10),
+
+              TextFormField(
+                controller: _preparationTimeMinutesController,
+                decoration: const InputDecoration(labelText: 'Recipe Preparation Time in Minutes'),
+                keyboardType: TextInputType.number,
+                validator: (value) => value!.isEmpty ? 'Enter a Recipe preparation time in minutes' : null,
+              ),
+              const SizedBox(height: 20),
+
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    final id = widget.recipe?.id ?? 0;
+                    final name = _nameController.text;
+                    final rate = double.parse(_rateController.text);
+                    final preparationTimeMinutes = int.parse(_preparationTimeMinutesController.text);
+
+                    if (widget.recipe == null) {
+                      service.create(Recipe(id: 0, name: name, rate: rate, addedDate: DateTime.now(), preparationTimeMinutes: preparationTimeMinutes, ingredients: List.empty(), steps: List.empty()));
+                    } else {
+                      service.update(Recipe(id: id, name: name, rate: rate, addedDate: DateTime.now(), preparationTimeMinutes: preparationTimeMinutes, ingredients: List.empty(), steps: List.empty()));
+                    }
+
+                    Navigator.pop(context);
+                  }
+                }, 
+                child: Text(widget.recipe == null ? 'Create' : 'Update'),
+              ),
+            ],
+          ),
+
+        ),
+      ),
+    );
+  }
+}
