@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/services/recipe_service.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/view/recipe/recipe_details_page.dart';
 
 class RecipeListPage extends StatelessWidget {
   const RecipeListPage({super.key});
