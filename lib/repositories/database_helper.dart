@@ -24,7 +24,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       dbPath,
-      version: 1,
+      version: 2,
       onCreate: (db, version) async {
         await _createTables(db);
         await _insertInitialData(db);
@@ -43,7 +43,7 @@ class DatabaseHelper {
       CREATE TABLE recipes (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         name TEXT NOT NULL,
-        rating REAL,
+        rate REAL,
         added_date TEXT NOT NULL,
         preparation_time_minutes INTEGER
       )
@@ -73,7 +73,7 @@ class DatabaseHelper {
   Future<void> _insertInitialData(Database db) async {
     int recipeId = await db.insert("recipes", {
         "name": "Chocolate Cake",
-        "rating": 4.5,
+        "rate": 4.5,
         "added_date": DateTime.now().millisecondsSinceEpoch ~/ 1000,
         "preparation_time_minutes": 60
       });
