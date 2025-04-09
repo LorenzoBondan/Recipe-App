@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/repositories/database_helper.dart';
+import 'package:recipe_app/services/preparation_step_service.dart';
+import 'package:recipe_app/services/recipe_ingredient_service.dart';
 import 'package:recipe_app/services/recipe_service.dart';
 import 'package:recipe_app/view/recipe/recipe_list_page.dart';
 
@@ -19,6 +21,8 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => RecipeService()),
+        ChangeNotifierProvider(create: (_) => RecipeIngredientService()),
+        ChangeNotifierProvider(create: (_) => PreparationStepService())
       ],
       child: MaterialApp(
         title: 'Recipe App',
