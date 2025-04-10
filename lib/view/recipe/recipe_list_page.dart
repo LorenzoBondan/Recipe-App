@@ -48,7 +48,11 @@ class _RecipeListPageState extends State<RecipeListPage> {
         .toList();
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Recipes')),
+      appBar: AppBar(
+        title: const Text('Recipes', style: TextStyle(fontWeight: FontWeight.bold, color: Color.fromARGB(255, 255, 255, 255))),
+        backgroundColor: Colors.deepPurple,
+        elevation: 5,
+      ),
       body: Column(
         children: [
           Padding(
@@ -58,8 +62,13 @@ class _RecipeListPageState extends State<RecipeListPage> {
               controller: _searchController,
               decoration: InputDecoration(
                 labelText: 'Search Recipe',
-                prefixIcon: const Icon(Icons.search),
+                labelStyle: TextStyle(color: Colors.deepPurple),
+                prefixIcon: const Icon(Icons.search, color: Colors.deepPurple),
                 border: OutlineInputBorder(borderRadius: BorderRadius.circular(8.0)),
+                focusedBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
+                enabledBorder: OutlineInputBorder(borderSide: BorderSide(color: Colors.deepPurple)),
+                hintText: 'Search...',
+                hintStyle: TextStyle(color: Colors.deepPurple.withValues(alpha: 0.6)),
               ),
               onChanged: (value) {
                 setState(() {
