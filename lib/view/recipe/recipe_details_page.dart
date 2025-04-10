@@ -108,13 +108,13 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
           children: [
 
             Text(widget.recipe.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
-            const SizedBox(height: 10),
+            const SizedBox(height: 15),
 
             Text('Rate: ${widget.recipe.rate}', style: const TextStyle(fontSize: 14, color: Colors.black87)),
             const SizedBox(height: 10),
 
             Text('Preparation time: ${widget.recipe.preparationTimeMinutes} minutes', style: const TextStyle(fontSize: 14, color: Colors.black87)),
-            const SizedBox(height: 10),
+            const SizedBox(height: 40),
 
             Text('Ingredients', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
             RecipeIngredientListPage(ingredients: ingredients, onDelete: _deleteRecipeIngredient, onEdit: _loadRecipeIngredients),
@@ -123,6 +123,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
               alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
                 heroTag: 'add_ingredient',
+                mini: true,
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,
                 child: const Icon(Icons.add),
@@ -144,6 +145,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
               alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
                 heroTag: 'add_step',
+                mini: true,
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,
                 child: const Icon(Icons.add),
