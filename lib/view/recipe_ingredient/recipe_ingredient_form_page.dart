@@ -49,11 +49,11 @@ class _RecipeIngredientFormPageState extends State<RecipeIngredientFormPage> {
               TextFormField(
                 controller: _nameController,
                 decoration: InputDecoration(
-                  labelText: 'Nome',
+                  labelText: 'Name',
                   labelStyle: TextStyle(color: Colors.deepPurple),
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => value!.isEmpty ? 'Insira um nome de ingrediente' : null,
+                validator: (value) => value!.isEmpty ? 'Enter the name of the Ingredient' : null,
               ),
               const SizedBox(height: 10),
 
@@ -64,8 +64,16 @@ class _RecipeIngredientFormPageState extends State<RecipeIngredientFormPage> {
                   labelStyle: TextStyle(color: Colors.deepPurple),
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Insira uma quantidade de ingrediente' : null,
+                keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter the quantity of the Ingredient';
+                  } else if (double.parse(value) < 0) {
+                    return 'The quantity cannot be negative';
+                  } else {
+                    return null;
+                  }
+                }
               ),
               const SizedBox(height: 10),
 

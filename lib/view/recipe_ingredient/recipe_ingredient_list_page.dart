@@ -43,7 +43,7 @@ class RecipeIngredientListPage extends StatelessWidget {
           final ingredient = ingredients[index];
           return ListTile(
             title: Text(ingredient.name, style: const TextStyle(fontSize: 14)),
-            subtitle: Text(ingredient.quantity as String, style: const TextStyle(fontSize: 12)),
+            subtitle: Text(ingredient.quantity.toString(), style: const TextStyle(fontSize: 12)),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

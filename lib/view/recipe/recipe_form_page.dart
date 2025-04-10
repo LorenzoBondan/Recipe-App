@@ -52,8 +52,16 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
               TextFormField(
                 controller: _rateController,
                 decoration: const InputDecoration(labelText: 'Recipe Rate'),
-                keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter a Recipe rate' : null,
+                keyboardType: TextInputType.numberWithOptions(decimal: true, signed: false),
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter a Recipe rate';
+                  } else if (double.parse(value) < 0) {
+                    return 'The Recipe rate cannot be negative';
+                  } else {
+                    return null;
+                  }
+                }
               ),
               const SizedBox(height: 10),
 
@@ -61,7 +69,15 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                 controller: _preparationTimeMinutesController,
                 decoration: const InputDecoration(labelText: 'Recipe Preparation Time in Minutes'),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Enter a Recipe preparation time in minutes' : null,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter a Recipe preparation time in minutes';
+                  } else if (int.parse(value) < 0) {
+                    return 'The Recipe preparation time in minutes cannot be negative';
+                  } else {
+                    return null;
+                  }
+                }
               ),
               const SizedBox(height: 20),
 
@@ -76,7 +92,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                     if (widget.recipe == null) {
                       service.create(Recipe(id: 0, name: name, rate: rate, addedDate: DateTime.now(), preparationTimeMinutes: preparationTimeMinutes, ingredients: List.empty(), steps: List.empty()));
                     } else {
-                      service.update(Recipe(id: id, name: name, rate: rate, addedDate: DateTime.now(), preparationTimeMinutes: preparationTimeMinutes, ingredients: List.empty(), steps: List.empty()));
+                      service.update(Recipe(id: id, name: name, rate: rate, addedDate: widget.recipe!.addedDate, preparationTimeMinutes: preparationTimeMinutes, ingredients: List.empty(), steps: List.empty()));
                     }
 
                     Navigator.pop(context);

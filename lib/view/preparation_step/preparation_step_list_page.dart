@@ -42,7 +42,7 @@ class PreparationStepListPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final step = steps[index];
           return ListTile(
-            title: Text(step.stepOrder as String, style: const TextStyle(fontSize: 14)),
+            title: Text(step.stepOrder.toString(), style: const TextStyle(fontSize: 14)),
             subtitle: Text(step.instruction, style: const TextStyle(fontSize: 12)),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,

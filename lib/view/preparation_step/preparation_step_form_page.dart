@@ -54,7 +54,15 @@ class _PreparationStepFormPageState extends State<PreparationStepFormPage> {
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
-                validator: (value) => value!.isEmpty ? 'Insira a ordem da instrução' : null,
+                validator: (value) {
+                  if (value!.isEmpty) {
+                    return 'Enter the Step Order';
+                  } else if (int.parse(value) < 0) {
+                    return 'The Step Order cannot be negative';
+                  } else {
+                    return null;
+                  }
+                }
               ),
               const SizedBox(height: 10),
 
@@ -65,7 +73,7 @@ class _PreparationStepFormPageState extends State<PreparationStepFormPage> {
                   labelStyle: TextStyle(color: Colors.deepPurple),
                   border: OutlineInputBorder(),
                 ),
-                validator: (value) => value!.isEmpty ? 'Insira a instrução' : null,
+                validator: (value) => value!.isEmpty ? 'Enter the Instruction' : null,
               ),
               const SizedBox(height: 25),
 
@@ -73,7 +81,7 @@ class _PreparationStepFormPageState extends State<PreparationStepFormPage> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     final id = widget.preparationStep?.id ?? 0;
-                    final stepOrder = _stepOrderController.text as int;
+                    final stepOrder = int.parse(_stepOrderController.text);
                     final instruction = _instructionController.text;
 
                     if (widget.preparationStep == null) {
