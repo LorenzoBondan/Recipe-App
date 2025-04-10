@@ -10,6 +10,8 @@ import 'package:recipe_app/view/preparation_step/preparation_step_form_page.dart
 import 'package:recipe_app/view/preparation_step/preparation_step_list_page.dart';
 import 'package:recipe_app/view/recipe/recipe_form_page.dart';
 import 'package:recipe_app/view/recipe/recipe_list_page.dart';
+import 'package:recipe_app/view/recipe_ingredient/recipe_ingredient_form_page.dart';
+import 'package:recipe_app/view/recipe_ingredient/recipe_ingredient_list_page.dart';
 
 class RecipeDetailsPage extends StatefulWidget {
   final Recipe recipe;
@@ -115,9 +117,8 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
             const SizedBox(height: 10),
 
             Text('Ingredients', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
-            //RecipeIngredientListPage(inredients: recipeIngredientService.findByRecipeId(widget.recipe.id), onDelete: _deleteRecipeIngredient, onEdit: _loadRecipeIngredients),
+            RecipeIngredientListPage(ingredients: ingredients, onDelete: _deleteRecipeIngredient, onEdit: _loadRecipeIngredients),
             
-            /*
             Align(
               alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
@@ -129,12 +130,11 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                     context,
                     MaterialPageRoute(builder: (context) => RecipeIngredientFormPage(recipeId: widget.recipe.id)),
                   );
-                  _loadIngredients();
+                  _loadRecipeIngredients();
                 },
               ),
             ),
             const SizedBox(height: 40),
-            */
 
             Text('Steps', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
             PreparationStepListPage(steps: steps, onDelete: _deletePreparationStep, onEdit: _loadPreparationSteps),
