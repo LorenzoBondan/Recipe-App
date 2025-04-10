@@ -23,11 +23,11 @@ class RecipeDetailsPage extends StatefulWidget {
 }
 
 class RecipeDetailsPageState extends State<RecipeDetailsPage> {
-  late RecipeService service;
-  late RecipeIngredientService recipeIngredientService;
-  late List<RecipeIngredient> ingredients;
-  late PreparationStepService preparationStepService;
-  late List<PreparationStep> steps;
+  late RecipeService service = RecipeService();
+  late RecipeIngredientService recipeIngredientService = RecipeIngredientService();
+  late List<RecipeIngredient> ingredients = [];
+  late PreparationStepService preparationStepService = PreparationStepService();
+  late List<PreparationStep> steps = [];
 
   @override
   void initState() {
@@ -122,6 +122,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
+                heroTag: 'add_ingredient',
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,
                 child: const Icon(Icons.add),
@@ -142,6 +143,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
             Align(
               alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
+                heroTag: 'add_step',
                 backgroundColor: Colors.deepPurple,
                 foregroundColor: Colors.white,
                 child: const Icon(Icons.add),
