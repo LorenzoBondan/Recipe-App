@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:recipe_app/entities/preparation_step.dart';
 import 'package:recipe_app/entities/recipe.dart';
+import 'package:recipe_app/entities/recipe_ingredient.dart';
+import 'package:recipe_app/services/preparation_step_service.dart';
+import 'package:recipe_app/services/recipe_ingredient_service.dart';
 import 'package:recipe_app/services/recipe_service.dart';
+import 'package:recipe_app/view/preparation_step/preparation_step_form_page.dart';
+import 'package:recipe_app/view/preparation_step/preparation_step_list_page.dart';
 import 'package:recipe_app/view/recipe/recipe_form_page.dart';
 import 'package:recipe_app/view/recipe/recipe_list_page.dart';
 
@@ -16,35 +22,32 @@ class RecipeDetailsPage extends StatefulWidget {
 
 class RecipeDetailsPageState extends State<RecipeDetailsPage> {
   late RecipeService service;
-  /*
   late RecipeIngredientService recipeIngredientService;
   late List<RecipeIngredient> ingredients;
   late PreparationStepService preparationStepService;
   late List<PreparationStep> steps;
-  */
 
   @override
   void initState() {
     super.initState();
     service = Provider.of<RecipeService>(context, listen: false);
-    /*
     recipeIngredientService = Provider.of<RecipeIngredientService>(context, listen: false);
     _loadRecipeIngredients();
     preparationStepService = Provider.of<PreparationStepService>(context, listen: false);
     _loadPreparationSteps();
-    */
   }
 
-  /*
-  void _loadRecipeIngredients() {
+  Future<void> _loadRecipeIngredients() async {
+    List<RecipeIngredient> ingredientsList = await recipeIngredientService.findByRecipeId(widget.recipe.id);
     setState(() {
-      ingredients = recipeIngredientService.findByRecipeId(widget.task.id);
+      ingredients = ingredientsList;
     });
   }
 
-  void _loadPreparationSteps() {
+  Future<void> _loadPreparationSteps() async {
+    List<PreparationStep> stepsList = await preparationStepService.findByRecipeId(widget.recipe.id);
     setState(() {
-      steps = preparationStepService.findByRecipeId(widget.task.id);
+      steps = stepsList;
     });
   }
 
@@ -57,9 +60,8 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
     preparationStepService.delete(preparationStepId);
     _loadPreparationSteps();
   }
-  */
 
-  void _confirmDelete(BuildContext context, int RecipeId) {
+  void _confirmDelete(BuildContext context, int recipeId) {
     showDialog(
       context: context,
       builder: (BuildContext dialogContext) {
@@ -73,7 +75,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
             ),
             TextButton(
               onPressed: () {
-                Provider.of<RecipeService>(context, listen: false).delete(RecipeId);
+                Provider.of<RecipeService>(context, listen: false).delete(recipeId);
                 Navigator.pop(dialogContext);
                 Navigator.pushReplacement(
                   context,
@@ -135,9 +137,8 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
             */
 
             Text('Steps', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
-            //PreparationStepListPage(steps: preparationStepService.findByRecipeId(widget.recipe.id), onDelete: _deletePreparationStep, onEdit: _loadPreparationSteps),
+            PreparationStepListPage(steps: steps, onDelete: _deletePreparationStep, onEdit: _loadPreparationSteps),
             
-            /*
             Align(
               alignment: Alignment.bottomCenter,
               child: FloatingActionButton(
@@ -147,14 +148,13 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                 onPressed: () async {
                   await Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => RecipeIngredientFormPage(recipeId: widget.recipe.id)),
+                    MaterialPageRoute(builder: (context) => PreparationStepFormPage(recipeId: widget.recipe.id)),
                   );
-                  _loadIngredients();
+                  _loadPreparationSteps();
                 },
               ),
             ),
             const SizedBox(height: 40),
-            */
             
             SizedBox(
               width: double.infinity, 
