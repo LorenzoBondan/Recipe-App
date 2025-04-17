@@ -59,7 +59,7 @@ class PreparationStepListPage extends StatelessWidget {
                   icon: const Icon(Icons.edit, color: Color.fromARGB(255, 100, 100, 100))
                 ),
                 IconButton(
-                  onPressed: () => _confirmDelete(context, step.id), 
+                  onPressed: () => _confirmDelete(context, step.id!), 
                   icon: const Icon(Icons.delete, color: Color.fromARGB(255, 255, 24, 24))
                 ),
               ],

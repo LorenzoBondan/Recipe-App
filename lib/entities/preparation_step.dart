@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class PreparationStep {
-  final int id;
+  final int? id;
   final int stepOrder;
   final String instruction;
   final int recipeId;

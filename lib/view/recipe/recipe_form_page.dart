@@ -90,7 +90,7 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                     final preparationTimeMinutes = int.parse(_preparationTimeMinutesController.text);
 
                     if (widget.recipe == null) {
-                      service.create(Recipe(id: 0, name: name, rate: rate, addedDate: DateTime.now(), preparationTimeMinutes: preparationTimeMinutes, ingredients: List.empty(), steps: List.empty()));
+                      service.create(Recipe(id: null, name: name, rate: rate, addedDate: DateTime.now(), preparationTimeMinutes: preparationTimeMinutes, ingredients: List.empty(), steps: List.empty()));
                     } else {
                       service.update(Recipe(id: id, name: name, rate: rate, addedDate: widget.recipe!.addedDate, preparationTimeMinutes: preparationTimeMinutes, ingredients: List.empty(), steps: List.empty()));
                     }

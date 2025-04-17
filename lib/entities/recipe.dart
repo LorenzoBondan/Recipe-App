@@ -3,7 +3,7 @@ import 'package:recipe_app/entities/preparation_step.dart';
 import 'package:recipe_app/entities/recipe_ingredient.dart';
 
 class Recipe {
-  final int id;
+  final int? id;
   final String name;
   final double rate;
   final DateTime addedDate;

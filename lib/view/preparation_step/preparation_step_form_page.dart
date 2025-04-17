@@ -85,7 +85,7 @@ class _PreparationStepFormPageState extends State<PreparationStepFormPage> {
                     final instruction = _instructionController.text;
 
                     if (widget.preparationStep == null) {
-                      service.create(PreparationStep(id: 0, recipeId: widget.recipeId!, stepOrder: stepOrder, instruction: instruction));
+                      service.create(PreparationStep(id: null, recipeId: widget.recipeId!, stepOrder: stepOrder, instruction: instruction));
                     } else {
                       service.update(PreparationStep(id: id, recipeId: widget.recipeId!, stepOrder: stepOrder, instruction: instruction));
                     }

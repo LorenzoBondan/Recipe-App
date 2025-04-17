@@ -115,7 +115,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
 
                       IconButton(
                         icon: const Icon(Icons.delete, color: Colors.red),
-                        onPressed: () => _confirmDelete(context, item.id),
+                        onPressed: () => _confirmDelete(context, item.id!),
                       ),
 
                     ],

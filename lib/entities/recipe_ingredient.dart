@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 class RecipeIngredient {
-  final int id;
+  final int? id;
   final String name;
   final double quantity;
   final int recipeId;

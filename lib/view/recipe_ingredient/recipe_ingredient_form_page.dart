@@ -85,7 +85,7 @@ class _RecipeIngredientFormPageState extends State<RecipeIngredientFormPage> {
                     final quantity = double.parse(_quantityController.text);
 
                     if (widget.recipeIngredient == null) {
-                      service.create(RecipeIngredient(id: 0, recipeId: widget.recipeId!, name: name, quantity: quantity));
+                      service.create(RecipeIngredient(id: null, recipeId: widget.recipeId!, name: name, quantity: quantity));
                     } else {
                       service.update(RecipeIngredient(id: id, recipeId: widget.recipeId!, name: name, quantity: quantity));
                     }

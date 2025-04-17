@@ -4,7 +4,7 @@ import 'package:path/path.dart';
 class DatabaseHelper {
   static final DatabaseHelper _instance = DatabaseHelper._internal();
   static Database? _database;
-  static const String dbName = 'recipe_app.db';
+  static const String dbName = 'recipe_app_oficial.db';
 
   factory DatabaseHelper() => _instance;
 
@@ -24,7 +24,7 @@ class DatabaseHelper {
 
     return await openDatabase(
       dbPath,
-      version: 2,
+      version: 1,
       onCreate: (db, version) async {
         await _createTables(db);
         await _insertInitialData(db);

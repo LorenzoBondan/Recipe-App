@@ -40,14 +40,14 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
   }
 
   Future<void> _loadRecipeIngredients() async {
-    List<RecipeIngredient> ingredientsList = await recipeIngredientService.findByRecipeId(widget.recipe.id);
+    List<RecipeIngredient> ingredientsList = await recipeIngredientService.findByRecipeId(widget.recipe.id!);
     setState(() {
       ingredients = ingredientsList;
     });
   }
 
   Future<void> _loadPreparationSteps() async {
-    List<PreparationStep> stepsList = await preparationStepService.findByRecipeId(widget.recipe.id);
+    List<PreparationStep> stepsList = await preparationStepService.findByRecipeId(widget.recipe.id!);
     setState(() {
       steps = stepsList;
     });
@@ -196,7 +196,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                           ),
                           onPressed: () {
-                            _confirmDelete(context, widget.recipe.id);
+                            _confirmDelete(context, widget.recipe.id!);
                           },
                         ),
                         ElevatedButton.icon(
