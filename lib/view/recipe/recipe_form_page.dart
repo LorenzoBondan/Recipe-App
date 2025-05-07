@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:recipe_app/entities/recipe.dart';
+import 'package:recipe_app/services/random_service.dart';
 import 'package:recipe_app/services/recipe_service.dart';
 import 'package:provider/provider.dart';
 
@@ -28,10 +29,24 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
     }
   }
 
+  void fillRandomValues() async {
+    final randomService = Provider.of<RandomService>(context, listen: false);
+
+    final randomString = await randomService.generateRandomString();
+    final randomInt = randomService.generateRandomInteger();
+    final randomDouble = randomService.generateRandomDouble();
+
+    setState(() {
+      _nameController.text = randomString.replaceAll("\"", "");
+      _preparationTimeMinutesController.text = randomInt.toString();
+      _rateController.text = randomDouble.toStringAsFixed(2);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final service = Provider.of<RecipeService>(context, listen: false);
-
+    
     return Scaffold(
       appBar: AppBar(title: Text(widget.recipe == null ? 'Add Recipe' : 'Edit Recipe')),
       
@@ -99,6 +114,13 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                   }
                 }, 
                 child: Text(widget.recipe == null ? 'Create' : 'Update'),
+              ),
+
+              ElevatedButton(
+                onPressed: () {
+                  fillRandomValues();
+                }, 
+                child: Text('Generate Random Values'),
               ),
             ],
           ),
