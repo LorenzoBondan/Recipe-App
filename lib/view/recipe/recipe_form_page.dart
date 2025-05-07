@@ -98,6 +98,13 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
 
               ElevatedButton(
                 onPressed: () {
+                  fillRandomValues();
+                }, 
+                child: Text('Generate Random Values'),
+              ),
+
+              ElevatedButton(
+                onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     final id = widget.recipe?.id ?? 0;
                     final name = _nameController.text;
@@ -116,15 +123,8 @@ class _RecipeFormPageState extends State<RecipeFormPage> {
                 child: Text(widget.recipe == null ? 'Create' : 'Update'),
               ),
 
-              ElevatedButton(
-                onPressed: () {
-                  fillRandomValues();
-                }, 
-                child: Text('Generate Random Values'),
-              ),
             ],
           ),
-
         ),
       ),
     );
