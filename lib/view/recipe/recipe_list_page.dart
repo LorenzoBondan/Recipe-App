@@ -128,24 +128,24 @@ class _RecipeListPageState extends State<RecipeListPage> {
                             fontStyle: FontStyle.italic,
                           ),
                         ),
-                        SizedBox(height: 2),
+                        const SizedBox(height: 2),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.access_time, color: Theme.of(context).primaryColorDark, size: 16),
-                            SizedBox(width: 4),
+                            const SizedBox(width: 4),
                             Text(
                               '${item.preparationTimeMinutes} ${item.preparationTimeMinutes == 1 ? "minute" : "minutes"}',
                               style: TextStyle(color: Colors.grey[900]),
                             ),
                           ],
                         ),
-                        SizedBox(height: 2),
+                        const SizedBox(height: 2),
                         Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
                             Icon(Icons.star, color: Colors.amber[700], size: 16),
-                            SizedBox(width: 4),
+                            const SizedBox(width: 4),
                             Text(
                               item.rate.toString(),
                               style: TextStyle(color: Colors.grey[900]),
