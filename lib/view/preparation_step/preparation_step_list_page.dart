@@ -11,22 +11,42 @@ class PreparationStepListPage extends StatelessWidget {
   
   void _confirmDelete(BuildContext context, int preparationStepId) {
     showDialog(
-      context: context, 
+      context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Confirm Deletion"),
-          content: const Text("Are you sure you want to delete this Step?"),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: const Text(
+            'Confirm Deletion',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: const Text(
+            'Are you sure you want to delete this Step?',
+            textAlign: TextAlign.center,
+          ),
+          actionsAlignment: MainAxisAlignment.center,
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text("Cancel"),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.grey[800] ?? const Color.fromARGB(255, 66, 66, 66),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 onDelete(preparationStepId);
                 Navigator.pop(dialogContext);
               },
-              child: const Text("Delete", style: TextStyle(color: Colors.red)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -42,8 +62,13 @@ class PreparationStepListPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final step = steps[index];
           return ListTile(
-            title: Text(step.stepOrder.toString(), style: const TextStyle(fontSize: 14)),
-            subtitle: Text(step.instruction, style: const TextStyle(fontSize: 12)),
+            title: Text('Step ${step.stepOrder}', style: TextStyle(fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold)),
+            subtitle: Text(
+              'Instruction: ${step.instruction}',
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: const TextStyle(fontSize: 12),
+            ),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -55,15 +80,23 @@ class PreparationStepListPage extends StatelessWidget {
                     ).then((_) {
                       onEdit();
                     });
-                  }, 
-                  icon: const Icon(Icons.edit, color: Color.fromARGB(255, 100, 100, 100))
+                  },
+                  icon: const Icon(Icons.edit)
                 ),
                 IconButton(
                   onPressed: () => _confirmDelete(context, step.id!), 
-                  icon: const Icon(Icons.delete, color: Color.fromARGB(255, 255, 24, 24))
+                  icon: Icon(Icons.delete, color: Colors.red)
                 ),
               ],
             ),
+            onTap: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => PreparationStepFormPage(preparationStep: step, recipeId: step.recipeId)),
+              ).then((_) {
+                onEdit();
+              });
+            },
           );
         },
       )
