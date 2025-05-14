@@ -12,6 +12,7 @@ import 'package:recipe_app/view/recipe/recipe_form_page.dart';
 import 'package:recipe_app/view/recipe/recipe_list_page.dart';
 import 'package:recipe_app/view/recipe_ingredient/recipe_ingredient_form_page.dart';
 import 'package:recipe_app/view/recipe_ingredient/recipe_ingredient_list_page.dart';
+import 'package:recipe_app/services/random_service.dart';
 import 'package:intl/intl.dart';
 
 class RecipeDetailsPage extends StatefulWidget {
@@ -61,6 +62,26 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
 
   void _deletePreparationStep(int preparationStepId) {
     preparationStepService.delete(preparationStepId);
+    _loadPreparationSteps();
+  }
+
+  void _generateAndAddRecipeIngredient() async {
+    final randomService = Provider.of<RandomService>(context, listen: false);
+
+    final randomString = await randomService.generateRandomString();
+    final randomDouble = randomService.generateRandomDouble();
+
+    recipeIngredientService.create(RecipeIngredient(id: null, recipeId: widget.recipe.id!, name: randomString.replaceAll("\"", ""), quantity: randomDouble));
+    _loadRecipeIngredients();
+  }
+
+  void _generateAndAddPreparationStep() async {
+    final randomService = Provider.of<RandomService>(context, listen: false);
+
+    final randomString = await randomService.generateRandomString();
+    final randomInt = randomService.generateRandomInteger();
+
+    preparationStepService.create(PreparationStep(id: null, recipeId: widget.recipe.id!, stepOrder: randomInt, instruction: randomString.replaceAll("\"", "")));
     _loadPreparationSteps();
   }
 
@@ -210,7 +231,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // ADICIONAR
+                      _generateAndAddRecipeIngredient();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey[800],
@@ -250,7 +271,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // ADICIONAR
+                      _generateAndAddPreparationStep();
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.grey[800],
