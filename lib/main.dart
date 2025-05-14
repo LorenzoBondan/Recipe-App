@@ -28,7 +28,17 @@ class MyApp extends StatelessWidget {
       ],
       child: MaterialApp(
         title: 'Recipe App',
-        theme: ThemeData(primarySwatch: Colors.blue),
+        theme: ThemeData(
+          primaryColor: Color.fromARGB(255, 60, 134, 225),
+          primaryColorDark: Color.fromARGB(255, 17, 122, 224),
+          textSelectionTheme: TextSelectionThemeData(
+            selectionColor: Colors.grey[300],
+            selectionHandleColor: Colors.grey[800],
+            cursorColor: Colors.grey[800],
+          ),
+          fontFamily: 'Poppins',
+        ),
+        debugShowCheckedModeBanner: false,
         home: const RecipeListPage(),
       ),
     );
