@@ -11,22 +11,42 @@ class RecipeIngredientListPage extends StatelessWidget {
   
   void _confirmDelete(BuildContext context, int recipeIngredientId) {
     showDialog(
-      context: context, 
+      context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Confirm Deletion"),
-          content: const Text("Are you sure you want to delete this Ingredient?"),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: const Text(
+            'Confirm Deletion',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: const Text(
+            'Are you sure you want to delete this Ingredient?',
+            textAlign: TextAlign.center,
+          ),
+          actionsAlignment: MainAxisAlignment.center,
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text("Cancel"),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.grey[800] ?? const Color.fromARGB(255, 66, 66, 66),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 onDelete(recipeIngredientId);
                 Navigator.pop(dialogContext);
               },
-              child: const Text("Delete", style: TextStyle(color: Colors.red)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -42,8 +62,13 @@ class RecipeIngredientListPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final ingredient = ingredients[index];
           return ListTile(
-            title: Text(ingredient.name, style: const TextStyle(fontSize: 14)),
-            subtitle: Text(ingredient.quantity.toString(), style: const TextStyle(fontSize: 12)),
+            title: Text(
+              ingredient.name,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: TextStyle(fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold)
+            ),
+            subtitle: Text('Quantity: ${ingredient.quantity}', style: const TextStyle(fontSize: 12)),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -56,14 +81,22 @@ class RecipeIngredientListPage extends StatelessWidget {
                       onEdit();
                     });
                   }, 
-                  icon: const Icon(Icons.edit, color: Color.fromARGB(255, 100, 100, 100))
+                  icon: Icon(Icons.edit)
                 ),
                 IconButton(
                   onPressed: () => _confirmDelete(context, ingredient.id!), 
-                  icon: const Icon(Icons.delete, color: Color.fromARGB(255, 255, 24, 24))
+                  icon: const Icon(Icons.delete, color: Colors.red)
                 ),
               ],
             ),
+            onTap: () {
+              Navigator.push(
+                context, 
+                MaterialPageRoute(builder: (context) => RecipeIngredientFormPage(recipeIngredient: ingredient, recipeId: ingredient.recipeId)),
+              ).then((_) {
+                onEdit();
+              });
+            },
           );
         },
       )
