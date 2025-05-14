@@ -4,18 +4,18 @@ import 'dart:math';
 
 class RandomService extends ChangeNotifier {
   
-  int generateRandomInteger() {
+  int generateRandomInteger({int max = 100}) {
     final random = Random();
-    return random.nextInt(100);
+    return random.nextInt(max);
   }
 
-  double generateRandomDouble() {
+  double generateRandomDouble({int max = 100}) {
     final random = Random();
-    return random.nextDouble() * 100;
+    return random.nextDouble() * max;
   }
 
-  Future<String> generateRandomString() {
-    int randomInteger = generateRandomInteger();
+  Future<String> generateRandomString({int maxLength = 25}) {
+    int randomInteger = generateRandomInteger(max: maxLength);
 
     final uri = Uri.parse('https://randommer.io/api/Text/LoremIpsum?loremType=normal&type=words&number=$randomInteger');
 

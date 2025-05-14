@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/entities/recipe_ingredient.dart';
 import 'package:recipe_app/services/recipe_ingredient_service.dart';
+import 'package:recipe_app/services/random_service.dart';
 
 class RecipeIngredientFormPage extends StatefulWidget {
   final RecipeIngredient? recipeIngredient;
@@ -28,6 +29,18 @@ class _RecipeIngredientFormPageState extends State<RecipeIngredientFormPage> {
       _nameController.text = widget.recipeIngredient!.name;
       _quantityController.text = widget.recipeIngredient!.quantity.toString();
     }
+  }
+
+  void fillRandomValues() async {
+    final randomService = Provider.of<RandomService>(context, listen: false);
+
+    final randomString = await randomService.generateRandomString();
+    final randomDouble = randomService.generateRandomDouble();
+
+    setState(() {
+      _nameController.text = randomString.replaceAll("\"", "");
+      _quantityController.text = randomDouble.toStringAsFixed(2);
+    });
   }
 
   @override
@@ -118,7 +131,7 @@ class _RecipeIngredientFormPageState extends State<RecipeIngredientFormPage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // ADICIONAR
+                        fillRandomValues();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[800],

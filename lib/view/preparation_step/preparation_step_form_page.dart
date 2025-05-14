@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:recipe_app/entities/preparation_step.dart';
 import 'package:recipe_app/services/preparation_step_service.dart';
+import 'package:recipe_app/services/random_service.dart';
 
 class PreparationStepFormPage extends StatefulWidget {
   final PreparationStep? preparationStep;
@@ -28,6 +29,18 @@ class _PreparationStepFormPageState extends State<PreparationStepFormPage> {
       _stepOrderController.text = widget.preparationStep!.stepOrder.toString();
       _instructionController.text = widget.preparationStep!.instruction;
     }
+  }
+
+  void fillRandomValues() async {
+    final randomService = Provider.of<RandomService>(context, listen: false);
+
+    final randomString = await randomService.generateRandomString();
+    final randomInt = randomService.generateRandomInteger();
+
+    setState(() {
+      _stepOrderController.text = randomInt.toString();
+      _instructionController.text = randomString.replaceAll("\"", "");
+    });
   }
 
   @override
@@ -118,7 +131,7 @@ class _PreparationStepFormPageState extends State<PreparationStepFormPage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // ADICIONAR
+                        fillRandomValues();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.grey[800],

@@ -183,6 +183,14 @@ class _RecipeListPageState extends State<RecipeListPage> {
                         ),
                       ],
                     ),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => RecipeDetailsPage(recipe: item),
+                        ),
+                      );
+                    },
                   ),
                 );
               },
