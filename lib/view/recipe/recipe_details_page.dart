@@ -12,6 +12,7 @@ import 'package:recipe_app/view/recipe/recipe_form_page.dart';
 import 'package:recipe_app/view/recipe/recipe_list_page.dart';
 import 'package:recipe_app/view/recipe_ingredient/recipe_ingredient_form_page.dart';
 import 'package:recipe_app/view/recipe_ingredient/recipe_ingredient_list_page.dart';
+import 'package:intl/intl.dart';
 
 class RecipeDetailsPage extends StatefulWidget {
   final Recipe recipe;
@@ -68,14 +69,29 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
       context: context,
       builder: (BuildContext dialogContext) {
         return AlertDialog(
-          title: const Text("Confirm Deletion"),
-          content: const Text("Are you sure you want to delete this Recipe?"),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+          title: const Text(
+            'Confirm Deletion',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: const Text(
+            'Are you sure you want to delete this Recipe?',
+            textAlign: TextAlign.center,
+          ),
+          actionsAlignment: MainAxisAlignment.center,
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(dialogContext),
-              child: const Text("Cancel"),
+              child: Text(
+                'Cancel',
+                style: TextStyle(
+                  color: Colors.grey[800] ?? const Color.fromARGB(255, 66, 66, 66),
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
             ),
-            TextButton(
+            ElevatedButton(
               onPressed: () {
                 Provider.of<RecipeService>(context, listen: false).delete(recipeId);
                 Navigator.pop(dialogContext);
@@ -84,7 +100,12 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                   MaterialPageRoute(builder: (context) => RecipeListPage()),
                 );
               },
-              child: const Text("Delete", style: TextStyle(color: Colors.red)),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('Delete'),
             ),
           ],
         );
@@ -96,124 +117,225 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Recipe Details', style: TextStyle(fontWeight: FontWeight.bold)),
-        backgroundColor: Colors.deepPurple,
-        foregroundColor: Colors.white,
-        elevation: 0,
+        title: const Text('Recipe Details', style: TextStyle(color: Color.fromARGB(255, 255, 255, 255), fontWeight: FontWeight.bold)),
+        centerTitle: true,
+        backgroundColor: Theme.of(context).primaryColor,
+        elevation: 5,
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Text(widget.recipe.name, style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.grey[900])),
 
-            Text(widget.recipe.name, style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
-            const SizedBox(height: 15),
-
-            Text('Rate: ${widget.recipe.rate}', style: const TextStyle(fontSize: 14, color: Colors.black87)),
-            const SizedBox(height: 10),
-
-            Text('Preparation time: ${widget.recipe.preparationTimeMinutes} minutes', style: const TextStyle(fontSize: 14, color: Colors.black87)),
-            const SizedBox(height: 40),
-
-            Text('Ingredients', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
-            RecipeIngredientListPage(ingredients: ingredients, onDelete: _deleteRecipeIngredient, onEdit: _loadRecipeIngredients),
-            
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: FloatingActionButton(
-                heroTag: 'add_ingredient',
-                mini: true,
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white,
-                child: const Icon(Icons.add),
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => RecipeIngredientFormPage(recipeId: widget.recipe.id)),
-                  );
-                  _loadRecipeIngredients();
-                },
-              ),
-            ),
-            const SizedBox(height: 40),
-
-            Text('Steps', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.deepPurple)),
-            PreparationStepListPage(steps: steps, onDelete: _deletePreparationStep, onEdit: _loadPreparationSteps),
-            
-            Align(
-              alignment: Alignment.bottomCenter,
-              child: FloatingActionButton(
-                heroTag: 'add_step',
-                mini: true,
-                backgroundColor: Colors.deepPurple,
-                foregroundColor: Colors.white,
-                child: const Icon(Icons.add),
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => PreparationStepFormPage(recipeId: widget.recipe.id)),
-                  );
-                  _loadPreparationSteps();
-                },
-              ),
-            ),
-            const SizedBox(height: 40),
-            
-            SizedBox(
-              width: double.infinity, 
-              child: 
-                Center(
-                  child: 
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                            
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.edit),
-                          label: const Text('Edit'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                            foregroundColor: Colors.white,
-                            iconColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(builder: (context) => RecipeFormPage(recipe: widget.recipe)),
-                            );
-                          },
+            const SizedBox(height: 16),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.calendar_month, color: Colors.indigo[600], size: 20),
+                const SizedBox(width: 4),
+                Text.rich(
+                  TextSpan(
+                    text: 'Date: ',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey[900]),
+                    children: [
+                      TextSpan(
+                        text: DateFormat('MM/dd/yyyy').format(widget.recipe.addedDate),
+                        style: TextStyle(
+                          color: Colors.grey[800],
+                          fontWeight: FontWeight.normal,
                         ),
-
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.delete),
-                          label: const Text('Delete'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                            foregroundColor: Colors.white,
-                            iconColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          ),
-                          onPressed: () {
-                            _confirmDelete(context, widget.recipe.id!);
-                          },
-                        ),
-                        ElevatedButton.icon(
-                          icon: const Icon(Icons.arrow_back),
-                          label: const Text('Back'),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.deepPurple,
-                            foregroundColor: Colors.white,
-                            iconColor: Colors.white,
-                            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                          ),
-                          onPressed: () => Navigator.pop(context),
-                        ),
+                      ),
                     ],
                   ),
-                )
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 8),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.timer, color: Colors.green[800], size: 20),
+                const SizedBox(width: 4),
+                Text.rich(
+                  TextSpan(
+                    text: 'Preparation Time: ',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey[900]),
+                    children: [
+                      TextSpan(
+                        text: '${widget.recipe.preparationTimeMinutes} ${widget.recipe.preparationTimeMinutes == 1 ? "minute" : "minutes"}',
+                        style: TextStyle(
+                          color: Colors.grey[800],
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 8),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.star_rounded, color: Colors.amber[700], size: 20),
+                const SizedBox(width: 4),
+                Text.rich(
+                  TextSpan(
+                    text: 'Rating: ',
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey[900]),
+                    children: [
+                      TextSpan(
+                        text: widget.recipe.rate.toString(),
+                        style: TextStyle(
+                          color: Colors.grey[800],
+                          fontWeight: FontWeight.normal,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+            Text('Ingredients', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColorDark)),
+            RecipeIngredientListPage(ingredients: ingredients, onDelete: _deleteRecipeIngredient, onEdit: _loadRecipeIngredients),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // ADICIONAR
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[800],
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    child: const Text('Generate'),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RecipeIngredientFormPage(recipeId: widget.recipe.id)),
+                      );
+                      _loadRecipeIngredients();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    child: Text('Add'),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+            Text('Steps', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColorDark)),
+            PreparationStepListPage(steps: steps, onDelete: _deletePreparationStep, onEdit: _loadPreparationSteps),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // ADICIONAR
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[800],
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    child: const Text('Generate'),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      await Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => PreparationStepFormPage(recipeId: widget.recipe.id)),
+                      );
+                      _loadPreparationSteps();
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.green,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                    ),
+                    child: Text('Add'),
+                  ),
+                ),
+              ],
+            ),
+
+            const SizedBox(height: 40),
+            SizedBox(
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => RecipeFormPage(recipe: widget.recipe)),
+                        );
+                      },
+                      icon: const Icon(Icons.edit, size: 18),
+                      label: const Text('Edit'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.grey[600],
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton.icon(
+                      onPressed: () {
+                        _confirmDelete(context, widget.recipe.id!);
+                      },
+                      icon: const Icon(Icons.delete, size: 18),
+                      label: const Text('Delete'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 120,
+                    child: ElevatedButton.icon(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back, size: 18),
+                      label: const Text('Back'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blueGrey,
+                        foregroundColor: Colors.white,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                      ),
+                    ),
+                  ),
+                ],
               ),
+            ),
           ],
         ),
       ),
