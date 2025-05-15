@@ -74,7 +74,7 @@ class DatabaseHelper {
     int recipeId = await db.insert("recipes", {
         "name": "Chocolate Cake",
         "rate": 4.5,
-        "added_date": DateTime.now().millisecondsSinceEpoch ~/ 1000,
+        "added_date": DateTime.now().toIso8601String(),
         "preparation_time_minutes": 60
       });
 

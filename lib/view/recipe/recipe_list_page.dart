@@ -128,6 +128,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                             fontStyle: FontStyle.italic,
                           ),
                         ),
+
                         const SizedBox(height: 2),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -140,6 +141,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                             ),
                           ],
                         ),
+                        
                         const SizedBox(height: 2),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -147,7 +149,7 @@ class _RecipeListPageState extends State<RecipeListPage> {
                             Icon(Icons.star, color: Colors.amber[700], size: 16),
                             const SizedBox(width: 4),
                             Text(
-                              item.rate.toString(),
+                              item.rate.toStringAsFixed(2),
                               style: TextStyle(color: Colors.grey[900]),
                             ),
                           ],

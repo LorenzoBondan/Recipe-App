@@ -36,6 +36,7 @@ class MyApp extends StatelessWidget {
             selectionHandleColor: Colors.grey[800],
             cursorColor: Colors.grey[800],
           ),
+          appBarTheme: const AppBarTheme(iconTheme: IconThemeData(color: Colors.white)),
           fontFamily: 'Poppins',
         ),
         debugShowCheckedModeBanner: false,

@@ -66,9 +66,9 @@ class RecipeIngredientListPage extends StatelessWidget {
               ingredient.name,
               overflow: TextOverflow.ellipsis,
               maxLines: 2,
-              style: TextStyle(fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold)
+              style: TextStyle(fontSize: 14, color: Colors.grey[800], fontWeight: FontWeight.bold)
             ),
-            subtitle: Text('Quantity: ${ingredient.quantity}', style: const TextStyle(fontSize: 12)),
+            subtitle: Text('Quantity: ${ingredient.quantity.toStringAsFixed(2)}', style: const TextStyle(fontSize: 12)),
             trailing: Row(
               mainAxisSize: MainAxisSize.min,
               children: [

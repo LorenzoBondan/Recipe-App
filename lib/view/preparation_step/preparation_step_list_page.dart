@@ -62,11 +62,11 @@ class PreparationStepListPage extends StatelessWidget {
         itemBuilder: (context, index) {
           final step = steps[index];
           return ListTile(
-            title: Text('Step ${step.stepOrder}', style: TextStyle(fontSize: 14, color: Colors.grey[700], fontWeight: FontWeight.bold)),
+            title: Text('Step ${step.stepOrder}', style: TextStyle(fontSize: 14, color: Colors.grey[800], fontWeight: FontWeight.bold)),
             subtitle: Text(
               'Instruction: ${step.instruction}',
               overflow: TextOverflow.ellipsis,
-              maxLines: 2,
+              maxLines: 3,
               style: const TextStyle(fontSize: 12),
             ),
             trailing: Row(

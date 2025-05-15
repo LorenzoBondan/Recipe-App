@@ -71,7 +71,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
     final randomString = await randomService.generateRandomString();
     final randomDouble = randomService.generateRandomDouble();
 
-    recipeIngredientService.create(RecipeIngredient(id: null, recipeId: widget.recipe.id!, name: randomString.replaceAll("\"", ""), quantity: randomDouble));
+    recipeIngredientService.create(RecipeIngredient(id: null, recipeId: widget.recipe.id!, name: randomString.replaceAll("\"", ""), quantity: double.parse(randomDouble.toStringAsFixed(2))));
     _loadRecipeIngredients();
   }
 
@@ -148,7 +148,12 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(widget.recipe.name, style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.grey[900])),
+            Text(
+              widget.recipe.name,
+              overflow: TextOverflow.ellipsis,
+              maxLines: 2,
+              style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold, color: Colors.grey[900]),
+            ),
 
             const SizedBox(height: 16),
             Row(
@@ -210,7 +215,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                     style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold, color: Colors.grey[900]),
                     children: [
                       TextSpan(
-                        text: widget.recipe.rate.toString(),
+                        text: widget.recipe.rate.toStringAsFixed(2),
                         style: TextStyle(
                           color: Colors.grey[800],
                           fontWeight: FontWeight.normal,
@@ -303,59 +308,55 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
             ),
 
             const SizedBox(height: 40),
-            SizedBox(
-              width: double.infinity,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  SizedBox(
-                    width: 120,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => RecipeFormPage(recipe: widget.recipe)),
-                        );
-                      },
-                      icon: const Icon(Icons.edit, size: 18),
-                      label: const Text('Edit'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.grey[600],
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RecipeFormPage(recipe: widget.recipe)),
+                      );
+                    },
+                    icon: const Icon(Icons.edit, size: 18, color: Colors.white),
+                    label: const Text('Edit'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.grey[600],
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
-                  SizedBox(
-                    width: 120,
-                    child: ElevatedButton.icon(
-                      onPressed: () {
-                        _confirmDelete(context, widget.recipe.id!);
-                      },
-                      icon: const Icon(Icons.delete, size: 18),
-                      label: const Text('Delete'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.red,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () {
+                      _confirmDelete(context, widget.recipe.id!);
+                    },
+                    icon: const Icon(Icons.delete, size: 18, color: Colors.white),
+                    label: const Text('Delete'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
-                  SizedBox(
-                    width: 120,
-                    child: ElevatedButton.icon(
-                      onPressed: () => Navigator.pop(context),
-                      icon: const Icon(Icons.arrow_back, size: 18),
-                      label: const Text('Back'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueGrey,
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-                      ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: ElevatedButton.icon(
+                    onPressed: () => Navigator.pop(context),
+                    icon: const Icon(Icons.arrow_back, size: 18, color: Colors.white),
+                    label: const Text('Back'),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.teal[800],
+                      foregroundColor: Colors.white,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ],
         ),
