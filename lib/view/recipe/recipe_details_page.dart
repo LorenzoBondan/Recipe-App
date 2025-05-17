@@ -21,10 +21,10 @@ class RecipeDetailsPage extends StatefulWidget {
   const RecipeDetailsPage({super.key, required this.recipe});
 
   @override
-  RecipeDetailsPageState createState() => RecipeDetailsPageState();
+  State<RecipeDetailsPage> createState() => _RecipeDetailsPageState();
 }
 
-class RecipeDetailsPageState extends State<RecipeDetailsPage> {
+class _RecipeDetailsPageState extends State<RecipeDetailsPage> {
   late RecipeService service = RecipeService();
   late RecipeIngredientService recipeIngredientService = RecipeIngredientService();
   late List<RecipeIngredient> ingredients = [];
@@ -227,7 +227,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
               ],
             ),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 22),
             Text('Ingredients', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColorDark)),
             RecipeIngredientListPage(ingredients: ingredients, onDelete: _deleteRecipeIngredient, onEdit: _loadRecipeIngredients),
             Row(
@@ -267,7 +267,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
               ],
             ),
 
-            const SizedBox(height: 40),
+            const SizedBox(height: 22),
             Text('Steps', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Theme.of(context).primaryColorDark)),
             PreparationStepListPage(steps: steps, onDelete: _deletePreparationStep, onEdit: _loadPreparationSteps),
             Row(
@@ -328,7 +328,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () {
@@ -343,7 +343,7 @@ class RecipeDetailsPageState extends State<RecipeDetailsPage> {
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                const SizedBox(width: 12),
                 Expanded(
                   child: ElevatedButton.icon(
                     onPressed: () => Navigator.pop(context),
