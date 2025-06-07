@@ -1,0 +1,35 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "recipe_app (no debug)",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "noDebug": true
+    },
+    {
+      "name": "recipe_app (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile"
+    },
+    {
+      "name": "recipe_app (release mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "release"
+    },
+    {
+      "name": "Flutter",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main.dart",
+      "args": [],
+      "noDebug": false,
+      "debugSdkLibraries": false,
+      "debugExternalPackageLibraries": false,
+      "flutterMode": "debug"
+    }
+  ]
+}

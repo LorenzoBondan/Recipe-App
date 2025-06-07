@@ -13,7 +13,7 @@ class LoginPage extends StatelessWidget {
         appBar: AppBar(
           title: const Text('Login'),
         ),
-        body: LoginForm(),
+        body: const LoginForm(),
       ),
     );
   }
@@ -30,7 +30,29 @@ class _LoginFormState extends State<LoginForm> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  AuthService authService = AuthService();
+  final AuthService authService = AuthService();
+
+  void _showError(String message) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(message),
+        duration: const Duration(seconds: 3),
+      ),
+    );
+  }
+
+  bool _validateInputs() {
+    if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
+      _showError('Please fill in all fields before continuing.');
+      return false;
+    }
+    return true;
+  }
+
+  String _extractUsername(String email) {
+    final atIndex = email.indexOf('@');
+    return atIndex != -1 ? email.substring(0, atIndex) : email;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,10 +61,12 @@ class _LoginFormState extends State<LoginForm> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(12.0),
+          const Padding(
+            padding: EdgeInsets.all(12.0),
             child: Text(
-                'Informe um usuário (email) e uma senha para se cadastrar ou para realizar o login'),
+              'Enter an email and password to register or log in.',
+              textAlign: TextAlign.center,
+            ),
           ),
           TextField(
             controller: _emailController,
@@ -55,30 +79,33 @@ class _LoginFormState extends State<LoginForm> {
             controller: _passwordController,
             obscureText: true,
             decoration: const InputDecoration(
-              labelText: 'Senha',
+              labelText: 'Password',
             ),
           ),
           const SizedBox(height: 20.0),
           ElevatedButton(
             onPressed: () {
-              String email = _emailController.text;
-              String password = _passwordController.text;
+              if (!_validateInputs()) return;
+
+              final email = _emailController.text;
+              final password = _passwordController.text;
+              final username = _extractUsername(email);
+
               authService
                   .register(
-                      email: email, password: password, name: 'Nome do Usuário')
+                      email: email,
+                      password: password,
+                      name: username)
                   .then((value) {
                 if (value == null) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => RecipeListPage()),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(value),
-                      duration: Duration(seconds: 4),
+                    MaterialPageRoute(
+                      builder: (context) => RecipeListPage(),
                     ),
                   );
+                } else {
+                  _showError(value);
                 }
               });
             },
@@ -87,22 +114,21 @@ class _LoginFormState extends State<LoginForm> {
           const SizedBox(height: 20.0),
           ElevatedButton(
             onPressed: () {
-              String email = _emailController.text;
-              String password = _passwordController.text;
+              if (!_validateInputs()) return;
+
+              final email = _emailController.text;
+              final password = _passwordController.text;
 
               authService.login(email: email, password: password).then((value) {
                 if (value == null) {
                   Navigator.pushReplacement(
                     context,
-                    MaterialPageRoute(builder: (context) => RecipeListPage()),
-                  );
-                } else {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(value),
-                      duration: Duration(seconds: 4),
+                    MaterialPageRoute(
+                      builder: (context) => RecipeListPage(),
                     ),
                   );
+                } else {
+                  _showError(value);
                 }
               });
             },
