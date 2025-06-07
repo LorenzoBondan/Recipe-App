@@ -5,7 +5,7 @@ import 'package:recipe_app/services/preparation_step_service.dart';
 import 'package:recipe_app/services/random_service.dart';
 import 'package:recipe_app/services/recipe_ingredient_service.dart';
 import 'package:recipe_app/services/recipe_service.dart';
-import 'package:recipe_app/view/recipe/recipe_list_page.dart';
+import 'package:recipe_app/view/login/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 
@@ -15,7 +15,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  
+
   await DatabaseHelper().database;
 
   runApp(const MyApp());
@@ -47,7 +47,7 @@ class MyApp extends StatelessWidget {
           fontFamily: 'Poppins',
         ),
         debugShowCheckedModeBanner: false,
-        home: const RecipeListPage(),
+        home: const LoginPage(),
       ),
     );
   }

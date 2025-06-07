@@ -3,16 +3,16 @@ import 'package:firebase_auth/firebase_auth.dart';
 class AuthService {
   final FirebaseAuth _firebaseAuth = FirebaseAuth.instance;
 
-  Future<String?> login({required String email, required String senha}) async {
+  Future<String?> login({required String email, required String password}) async {
     try {
       await _firebaseAuth.signInWithEmailAndPassword(
-          email: email, password: senha);
+          email: email, password: password);
     } on FirebaseAuthException catch (e) {
       switch (e.code) {
         case "user-not-found":
-          return "Email inválido";
+          return "Invalid e-mail";
         case "wrong-password":
-          return "Senha inválida";
+          return "Invalid password";
       }
       return e.code;
     }
