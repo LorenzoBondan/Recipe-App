@@ -9,11 +9,8 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Login',
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Login'),
-        ),
-        body: const LoginForm(),
+      home: const Scaffold(
+        body: LoginForm(),
       ),
     );
   }
@@ -54,87 +51,124 @@ class _LoginFormState extends State<LoginForm> {
     return atIndex != -1 ? email.substring(0, atIndex) : email;
   }
 
+  InputDecoration _inputDecoration(String label) {
+    return InputDecoration(
+      labelText: label,
+      labelStyle: TextStyle(color: Colors.grey[700]),
+      floatingLabelStyle: TextStyle(color: Colors.grey[900], fontWeight: FontWeight.bold),
+      enabledBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey[500]!),
+        borderRadius: BorderRadius.circular(3.0),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderSide: BorderSide(color: Colors.grey[700]!),
+        borderRadius: BorderRadius.circular(3.0),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.red),
+        borderRadius: BorderRadius.circular(3.0),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderSide: const BorderSide(color: Colors.red),
+        borderRadius: BorderRadius.circular(3.0),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(20.0),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          const Padding(
-            padding: EdgeInsets.all(12.0),
-            child: Text(
-              'Enter an email and password to register or log in.',
+    return Center(
+      child: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(horizontal: 24.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              'Welcome!',
+              style: TextStyle(
+                fontSize: 26,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              'Enter your email and password to continue',
+              style: TextStyle(fontSize: 16),
               textAlign: TextAlign.center,
             ),
-          ),
-          TextField(
-            controller: _emailController,
-            decoration: const InputDecoration(
-              labelText: 'Email',
+            const SizedBox(height: 24),
+            TextField(
+              controller: _emailController,
+              decoration: _inputDecoration('Email'),
             ),
-          ),
-          const SizedBox(height: 20.0),
-          TextField(
-            controller: _passwordController,
-            obscureText: true,
-            decoration: const InputDecoration(
-              labelText: 'Password',
+            const SizedBox(height: 20),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              decoration: _inputDecoration('Password'),
             ),
-          ),
-          const SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: () {
-              if (!_validateInputs()) return;
+            const SizedBox(height: 30),
+            ElevatedButton(
+              onPressed: () {
+                if (!_validateInputs()) return;
 
-              final email = _emailController.text;
-              final password = _passwordController.text;
-              final username = _extractUsername(email);
+                final email = _emailController.text;
+                final password = _passwordController.text;
+                final username = _extractUsername(email);
 
-              authService
-                  .register(
-                      email: email,
-                      password: password,
-                      name: username)
-                  .then((value) {
-                if (value == null) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecipeListPage(),
-                    ),
-                  );
-                } else {
-                  _showError(value);
-                }
-              });
-            },
-            child: const Text('Register'),
-          ),
-          const SizedBox(height: 20.0),
-          ElevatedButton(
-            onPressed: () {
-              if (!_validateInputs()) return;
+                authService.register(
+                  email: email,
+                  password: password,
+                  name: username,
+                ).then((value) {
+                  if (value == null) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => RecipeListPage()),
+                    );
+                  } else {
+                    _showError(value);
+                  }
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.grey[800],
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 48),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('Register'),
+            ),
+            const SizedBox(height: 16),
+            ElevatedButton(
+              onPressed: () {
+                if (!_validateInputs()) return;
 
-              final email = _emailController.text;
-              final password = _passwordController.text;
+                final email = _emailController.text;
+                final password = _passwordController.text;
 
-              authService.login(email: email, password: password).then((value) {
-                if (value == null) {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => RecipeListPage(),
-                    ),
-                  );
-                } else {
-                  _showError(value);
-                }
-              });
-            },
-            child: const Text('Login'),
-          ),
-        ],
+                authService.login(email: email, password: password).then((value) {
+                  if (value == null) {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(builder: (context) => RecipeListPage()),
+                    );
+                  } else {
+                    _showError(value);
+                  }
+                });
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.green,
+                foregroundColor: Colors.white,
+                minimumSize: const Size(double.infinity, 48),
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+              ),
+              child: const Text('Login'),
+            ),
+            const SizedBox(height: 24),
+          ],
+        ),
       ),
     );
   }
